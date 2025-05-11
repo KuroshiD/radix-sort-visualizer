@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização do Radix Sort</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Visualização Interativa do Radix Sort</h1>
+    
+    <div class="container">
+        <div class="controls">
+            <input type="text" id="array-input" placeholder="Insira números separados por vírgula (ex: 170, 45, 75, 90, 802, 24, 2, 66)" value="170, 45, 75, 90, 802, 24, 2, 66">
+            <select id="sort-type">
+                <option value="lsd" selected>LSD Radix Sort (least significant digit)</option>
+                <option value="msd">MSD Radix Sort (most significant digit)</option>
+            </select>
+            <button id="start-btn">Iniciar Algoritmo</button>
+            <button id="next-btn" disabled>Próximo Passo</button>
+            <button id="auto-btn" disabled>Execução Automática</button>
+            <button id="reset-btn" class="reset" disabled>Reiniciar</button>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+        
+        <div class="visualization">
+            <h2>Array Original</h2>
+            <div class="array-container">
+                <div class="array-row" id="original-array"></div>
+            </div>
+            
+            <h2>Passo Atual</h2>
+            <div class="array-container">
+                <div class="array-row" id="current-array"></div>
+            </div>
+            
+            <h2>Baldes (0-9)</h2>
+            <div class="buckets-container">
+                <div class="buckets-row" id="buckets-row-1"></div>
+                <div class="buckets-row" id="buckets-row-2"></div>
+            </div>
+            
+            <div class="step-explanation" id="explanation">
+                Clique em "Iniciar Algoritmo" para começar a visualização.
+            </div>
+        </div>
+        
+        <div class="explanation">
+            <h2>Como Funciona o Radix Sort?</h2>
+            <p>O Radix Sort é um algoritmo de ordenação não-comparativo que ordena números inteiros processando dígito por dígito. Existem duas variantes principais:</p>
+            
+            <h3>LSD Radix Sort (Least Significant Digit)</h3>
+            <ol>
+                <li>Começa pelo dígito menos significativo (unidades)</li>
+                <li>Distribui os números em baldes de acordo com o valor deste dígito</li>
+                <li>Coleta os números dos baldes na ordem (0-9)</li>
+                <li>Repete o processo para cada posição de dígito (dezenas, centenas, etc.)</li>
+                <li>O array final estará completamente ordenado</li>
+            </ol>
+            
+            <h3>MSD Radix Sort (Most Significant Digit)</h3>
+            <ol>
+                <li>Começa pelo dígito mais significativo (dígito mais à esquerda)</li>
+                <li>Distribui os números em baldes de acordo com o valor deste dígito</li>
+                <li>Para cada balde não vazio, ordena recursivamente usando o próximo dígito mais significativo</li>
+                <li>O resultado final é o conjunto de todos os baldes concatenados em ordem</li>
+            </ol>
+            
+            <p><strong>Diferenças:</strong> O LSD processa todos os números de uma vez para cada dígito, do menos para o mais significativo, enquanto o MSD trabalha recursivamente, dividindo o problema em subproblemas menores, do dígito mais significativo para o menos. O LSD precisa processar todos os dígitos para garantir a ordenação, enquanto o MSD pode terminar antes em alguns grupos.</p>
+            
+            <p>Ambos têm complexidade de tempo O(n·k), onde n é o número de elementos e k é o número de dígitos do maior número.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
