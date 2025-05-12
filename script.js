@@ -4,7 +4,6 @@ const currentArrayEl = document.getElementById('current-array');
 const bucketsEl = document.getElementById('buckets');
 const explanationEl = document.getElementById('explanation');
 const arrayInputEl = document.getElementById('array-input');
-const sortTypeEl = document.getElementById('sort-type');
 const startBtn = document.getElementById('start-btn');
 const nextBtn = document.getElementById('next-btn');
 const autoBtn = document.getElementById('auto-btn');
@@ -21,8 +20,6 @@ let step = 0;
 let totalSteps = 0;
 let autoExecutionInterval = null;
 let isMSD = false;
-let msdSubarrays = [];
-let currentSubarrayIndex = 0;
 
 // Estados da visualização
 const STATES = {
@@ -30,8 +27,7 @@ const STATES = {
     DIGIT_EXTRACTION: 1,
     BUCKETING: 2,
     COLLECTING: 3,
-    MSD_SUBARRAYS: 4,
-    COMPLETED: 5
+    COMPLETED: 4
 };
 
 let currentState = STATES.INITIAL;
@@ -107,11 +103,7 @@ const renderArray = (arrayEl, array, highlightIndex = -1, digitPos = -1) => {
             const numStr = num.toString().padStart(maxDigits, '0');
             let highlightIndex;
 
-            if (isMSD) {
-                highlightIndex = digitPos;
-            } else {
-                highlightIndex = maxDigits - 1 - digitPos;
-            }
+            highlightIndex = maxDigits - 1 - digitPos;
 
             const span = document.createElement('span');
             span.innerHTML = numStr.substring(0, highlightIndex) +
@@ -173,24 +165,15 @@ const startAlgorithm = () => {
         return;
     }
 
-    isMSD = sortTypeEl.value === 'msd';
+    isMSD = false;
     currentArray = [...originalArray];
     maxDigits = Math.max(...currentArray.map(n => n.toString().length));
-    currentDigit = isMSD ? 0 : 0;
+    currentDigit = 0;
     currentState = STATES.INITIAL;
     currentItemIndex = 0;
     step = 0;
 
-    if (isMSD) {
-        totalSteps = calculateMSDSteps([...currentArray], 0);
-    } else {
-        totalSteps = maxDigits * (currentArray.length + 2);
-    }
-
-    if (isMSD) {
-        msdSubarrays = [{ array: [...currentArray], digitPos: 0 }];
-        currentSubarrayIndex = 0;
-    }
+    totalSteps = maxDigits * (currentArray.length + 2);
 
     renderArray(originalArrayEl, originalArray);
     renderArray(currentArrayEl, currentArray);
@@ -201,43 +184,14 @@ const startAlgorithm = () => {
     autoBtn.disabled = false;
     resetBtn.disabled = false;
 
-    if (isMSD) {
-        explanationEl.innerHTML = `
-                    <p>Vamos começar a ordenação MSD Radix Sort!</p>
-                    <p>O array tem ${originalArray.length} números e o maior número tem ${maxDigits} dígitos.</p>
-                    <p>Vamos processar dígito por dígito, começando pelo dígito mais significativo (primeiro dígito da esquerda).</p>
-                    <p>Total de passos calculados: ${totalSteps}</p>
-                `;
-    } else {
-        explanationEl.innerHTML = `
+    explanationEl.innerHTML = `
                     <p>Vamos começar a ordenação LSD Radix Sort!</p>
                     <p>O array tem ${originalArray.length} números e o maior número tem ${maxDigits} dígitos.</p>
                     <p>Vamos processar dígito por dígito, começando pelo dígito menos significativo (unidades).</p>
                     <p>Total de passos calculados: ${totalSteps}</p>
                 `;
-    }
 
     updateProgress();
-};
-
-// Função para calcular previamente o número de passos para o MSD
-const calculateMSDSteps = (array, digitPos) => {
-    if (array.length <= 1 || digitPos >= maxDigits) {
-        return 1;
-    }
-    let steps = 1 + array.length;
-    const tempBuckets = Array.from({ length: 10 }, () => []);
-    for (const num of array) {
-        const digit = getMSDDigit(num, digitPos);
-        tempBuckets[digit].push(num);
-    }
-    steps += 1;
-    for (const bucket of tempBuckets) {
-        if (bucket.length > 0) {
-            steps += calculateMSDSteps(bucket, digitPos + 1);
-        }
-    }
-    return steps;
 };
 
 // Próximo passo do algoritmo
@@ -245,11 +199,7 @@ const nextStep = () => {
     step++;
     updateProgress();
 
-    if (isMSD) {
-        nextStepMSD();
-    } else {
-        nextStepLSD();
-    }
+    nextStepLSD();
 };
 
 // Próximo passo do algoritmo LSD
@@ -323,108 +273,8 @@ const nextStepLSD = () => {
     }
 };
 
-// Próximo passo do algoritmo MSD
-const nextStepMSD = () => {
-    if (currentSubarrayIndex >= msdSubarrays.length) {
-        // Verificar se todos os subarrays foram processados
-        if (msdSubarrays.length === 0) {
-            currentState = STATES.COMPLETED;
-            explanationEl.innerHTML = `
-                <p>Todos os números foram processados!</p>
-                <p>O array está completamente ordenado: <strong>[${currentArray.join(', ')}]</strong></p>
-                <p>O MSD Radix Sort foi executado com sucesso.</p>
-            `;
-
-            nextBtn.disabled = true;
-            autoBtn.disabled = true;
-            stopAutoExecution();
-        } else {
-            // Coletar os números de todos os subarrays restantes
-            currentArray = msdSubarrays.flatMap(sub => sub.array);
-            msdSubarrays = [];
-            renderArray(currentArrayEl, currentArray);
-        }
-        return;
-    }
-
-    const currentSubarray = msdSubarrays[currentSubarrayIndex];
-
-    switch (currentState) {
-        case STATES.INITIAL:
-            clearBuckets();
-            currentArray = currentSubarray.array;
-            currentDigit = currentSubarray.digitPos;
-
-            if (currentArray.length <= 1 || currentDigit >= maxDigits) {
-                currentSubarrayIndex++;
-                break;
-            }
-
-            renderArray(currentArrayEl, currentArray);
-
-            explanationEl.innerHTML = `
-                <p>Processando subarray [${currentArray.join(', ')}] pelo dígito na posição ${currentDigit + 1} (da esquerda para a direita).</p>
-            `;
-
-            currentState = STATES.DIGIT_EXTRACTION;
-            currentItemIndex = 0;
-            break;
-
-        case STATES.DIGIT_EXTRACTION:
-            if (currentItemIndex >= currentArray.length) {
-                currentState = STATES.COLLECTING;
-                break;
-            }
-
-            const num = currentArray[currentItemIndex];
-            const digit = getMSDDigit(num, currentDigit);
-
-            renderArray(currentArrayEl, currentArray, currentItemIndex, currentDigit);
-
-            explanationEl.innerHTML = `
-                <p>Extraindo o dígito da posição ${currentDigit + 1} (da esquerda) do número <strong>${num}</strong>.</p>
-                <p>O dígito é <span class="digit-highlight">${digit}</span>, então colocamos ${num} no Balde ${digit}.</p>
-            `;
-
-            addToBucket(digit, num);
-
-            currentItemIndex++;
-            break;
-
-        case STATES.COLLECTING:
-            msdSubarrays.splice(currentSubarrayIndex, 1);
-
-            for (let i = 0; i < 10; i++) {
-                if (buckets[i].length > 0) {
-                    msdSubarrays.push({
-                        array: [...buckets[i]],
-                        digitPos: currentDigit + 1
-                    });
-                }
-            }
-
-            currentArray = msdSubarrays.flatMap(sub => sub.array);
-            renderArray(currentArrayEl, currentArray);
-
-            explanationEl.innerHTML = `
-                <p>Distribuímos os números em baldes pelo dígito na posição ${currentDigit + 1}.</p>
-                <p>Agora temos ${msdSubarrays.length} subarrays para processar pelo próximo dígito.</p>
-                <p>Estado atual do array: <strong>[${currentArray.join(', ')}]</strong></p>
-            `;
-
-            currentState = STATES.INITIAL;
-            break;
-    }
-};
-
 // Obter o dígito na posição especificada (da direita para a esquerda) para LSD
 const getDigit = (num, pos) => Math.floor(Math.abs(num) / Math.pow(10, pos)) % 10;
-
-// Obter o dígito na posição especificada (da esquerda para a direita) para MSD
-const getMSDDigit = (num, pos) => {
-    const numStr = num.toString().padStart(maxDigits, '0');
-    return parseInt(numStr[pos], 10);
-};
 
 // Reiniciar a visualização
 const resetVisualization = () => {
@@ -435,8 +285,6 @@ const resetVisualization = () => {
     currentItemIndex = 0;
     step = 0;
     totalSteps = 0;
-    msdSubarrays = [];
-    currentSubarrayIndex = 0;
 
     originalArrayEl.innerHTML = '';
     currentArrayEl.innerHTML = '';
@@ -491,7 +339,6 @@ startBtn.addEventListener('click', startAlgorithm);
 nextBtn.addEventListener('click', nextStep);
 resetBtn.addEventListener('click', resetVisualization);
 autoBtn.addEventListener('click', toggleAutoExecution);
-sortTypeEl.addEventListener('change', resetVisualization);
 
 // Inicialização
 resetVisualization();
