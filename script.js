@@ -39,33 +39,56 @@ let currentItemIndex = 0;
 
 // Inicializar os baldes
 const initializeBuckets = () => {
-    document.getElementById('buckets-row-1').innerHTML = '';
-    document.getElementById('buckets-row-2').innerHTML = '';
+    const bucketsContainer = document.getElementById('buckets-container');
+    bucketsContainer.innerHTML = '';
     buckets = Array.from({ length: 10 }, () => []);
 
-    for (let row = 0; row < 2; row++) {
-        const bucketRowEl = document.getElementById(`buckets-row-${row + 1}`);
-        const startBucket = row * 5;
-        const endBucket = startBucket + 5;
+    const isSmallScreen = window.innerWidth <= 500;
+    const rows = isSmallScreen ? Math.ceil(10 / 2) : 2; // Ensure proper row calculation
+    const cols = isSmallScreen ? 2 : 5;
 
-        for (let i = startBucket; i < endBucket; i++) {
+    for (let row = 0; row < rows; row++) {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'buckets-row';
+
+        for (let col = 0; col < cols; col++) {
+            const bucketIndex = row * cols + col;
+            if (bucketIndex >= 10) break;
+
             const bucket = document.createElement('div');
             bucket.className = 'bucket';
 
             const label = document.createElement('div');
             label.className = 'bucket-label';
-            label.textContent = `Balde ${i}`;
+            label.textContent = `Balde ${bucketIndex}`;
 
             const bucketItems = document.createElement('div');
             bucketItems.className = 'bucket-items';
-            bucketItems.id = `bucket-items-${i}`;
+            bucketItems.id = `bucket-items-${bucketIndex}`;
 
             bucket.appendChild(label);
             bucket.appendChild(bucketItems);
-            bucket.id = `bucket-${i}`;
-            bucketRowEl.appendChild(bucket);
+            bucket.id = `bucket-${bucketIndex}`;
+            rowDiv.appendChild(bucket);
         }
+
+        bucketsContainer.appendChild(rowDiv);
     }
+};
+
+const adjustBucketHeights = () => {
+    const bucketElements = document.querySelectorAll('.bucket-items');
+    let maxHeight = 0;
+
+    // Calculate the maximum height
+    bucketElements.forEach(bucket => {
+        maxHeight = Math.max(maxHeight, bucket.scrollHeight);
+    });
+
+    // Apply the maximum height to all buckets
+    bucketElements.forEach(bucket => {
+        bucket.style.minHeight = `${maxHeight}px`;
+    });
 };
 
 // Renderizar o array
@@ -112,6 +135,9 @@ const addToBucket = (bucketIndex, num) => {
     item.className = 'bucket-item';
     item.textContent = num;
     bucketItems.appendChild(item);
+
+    // Adjust bucket heights after adding an item
+    adjustBucketHeights();
 };
 
 // Limpar os baldes
@@ -300,16 +326,24 @@ const nextStepLSD = () => {
 // Próximo passo do algoritmo MSD
 const nextStepMSD = () => {
     if (currentSubarrayIndex >= msdSubarrays.length) {
-        currentState = STATES.COMPLETED;
-        explanationEl.innerHTML = `
-                    <p>Todos os subarrays foram processados!</p>
-                    <p>O array está completamente ordenado: <strong>[${currentArray.join(', ')}]</strong></p>
-                    <p>O MSD Radix Sort divide recursivamente o problema em subproblemas menores, ordenando cada subarray pelo dígito atual.</p>
-                `;
+        // Verificar se todos os subarrays foram processados
+        if (msdSubarrays.length === 0) {
+            currentState = STATES.COMPLETED;
+            explanationEl.innerHTML = `
+                <p>Todos os números foram processados!</p>
+                <p>O array está completamente ordenado: <strong>[${currentArray.join(', ')}]</strong></p>
+                <p>O MSD Radix Sort foi executado com sucesso.</p>
+            `;
 
-        nextBtn.disabled = true;
-        autoBtn.disabled = true;
-        stopAutoExecution();
+            nextBtn.disabled = true;
+            autoBtn.disabled = true;
+            stopAutoExecution();
+        } else {
+            // Coletar os números de todos os subarrays restantes
+            currentArray = msdSubarrays.flatMap(sub => sub.array);
+            msdSubarrays = [];
+            renderArray(currentArrayEl, currentArray);
+        }
         return;
     }
 
@@ -323,18 +357,14 @@ const nextStepMSD = () => {
 
             if (currentArray.length <= 1 || currentDigit >= maxDigits) {
                 currentSubarrayIndex++;
-                if (currentSubarrayIndex >= msdSubarrays.length) {
-                    currentArray = msdSubarrays.flatMap(sub => sub.array);
-                    renderArray(currentArrayEl, currentArray);
-                }
                 break;
             }
 
             renderArray(currentArrayEl, currentArray);
 
             explanationEl.innerHTML = `
-                        <p>Processando subarray [${currentArray.join(', ')}] pelo dígito na posição ${currentDigit + 1} (da esquerda para a direita).</p>
-                    `;
+                <p>Processando subarray [${currentArray.join(', ')}] pelo dígito na posição ${currentDigit + 1} (da esquerda para a direita).</p>
+            `;
 
             currentState = STATES.DIGIT_EXTRACTION;
             currentItemIndex = 0;
@@ -347,15 +377,14 @@ const nextStepMSD = () => {
             }
 
             const num = currentArray[currentItemIndex];
-            const digitPos = currentDigit;
-            const digit = getMSDDigit(num, digitPos);
+            const digit = getMSDDigit(num, currentDigit);
 
-            renderArray(currentArrayEl, currentArray, currentItemIndex, digitPos);
+            renderArray(currentArrayEl, currentArray, currentItemIndex, currentDigit);
 
             explanationEl.innerHTML = `
-                        <p>Extraindo o dígito da posição ${digitPos + 1} (da esquerda) do número <strong>${num}</strong>.</p>
-                        <p>O dígito é <span class="digit-highlight">${digit}</span>, então colocamos ${num} no Balde ${digit}.</p>
-                    `;
+                <p>Extraindo o dígito da posição ${currentDigit + 1} (da esquerda) do número <strong>${num}</strong>.</p>
+                <p>O dígito é <span class="digit-highlight">${digit}</span>, então colocamos ${num} no Balde ${digit}.</p>
+            `;
 
             addToBucket(digit, num);
 
@@ -365,31 +394,23 @@ const nextStepMSD = () => {
         case STATES.COLLECTING:
             msdSubarrays.splice(currentSubarrayIndex, 1);
 
-            let anyBucketAdded = false;
-
             for (let i = 0; i < 10; i++) {
                 if (buckets[i].length > 0) {
-                    msdSubarrays.splice(currentSubarrayIndex, 0, {
+                    msdSubarrays.push({
                         array: [...buckets[i]],
                         digitPos: currentDigit + 1
                     });
-                    currentSubarrayIndex++;
-                    anyBucketAdded = true;
                 }
-            }
-
-            if (anyBucketAdded) {
-                currentSubarrayIndex -= anyBucketAdded ? 1 : 0;
             }
 
             currentArray = msdSubarrays.flatMap(sub => sub.array);
             renderArray(currentArrayEl, currentArray);
 
             explanationEl.innerHTML = `
-                        <p>Distribuímos os números em baldes pelo dígito na posição ${currentDigit + 1}.</p>
-                        <p>Agora temos ${msdSubarrays.length} subarrays para processar pelo próximo dígito.</p>
-                        <p>Estado atual do array: <strong>[${currentArray.join(', ')}]</strong></p>
-                    `;
+                <p>Distribuímos os números em baldes pelo dígito na posição ${currentDigit + 1}.</p>
+                <p>Agora temos ${msdSubarrays.length} subarrays para processar pelo próximo dígito.</p>
+                <p>Estado atual do array: <strong>[${currentArray.join(', ')}]</strong></p>
+            `;
 
             currentState = STATES.INITIAL;
             break;
