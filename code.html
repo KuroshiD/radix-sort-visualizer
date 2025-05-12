@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementações Radix Sort - VS Code Style</title>
+    <link rel="stylesheet" href="code.css">
+    <style>
+        /* Adiciona recuo visual para linhas de código indentadas */
+        .code-line.indent-1 .code-text { padding-left: 2em; }
+        .code-line.indent-2 .code-text { padding-left: 4em; }
+        .code-line.indent-3 .code-text { padding-left: 6em; }
+        .code-line.indent-4 .code-text { padding-left: 8em; }
+        /* Adapte conforme necessário para mais níveis */
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <div class="explorer-header">
+            Explorer
+        </div>
+        <ul class="file-list">
+            <li class="file-item active" data-file="rust">
+                <span class="file-icon">
+                    <img src="./assets/rust.png" alt="Rust" width="16" height="16">
+                </span>
+                <span class="file-name">radix_sort.rs</span>
+            </li>
+            <li class="file-item" data-file="cpp">
+                <span class="file-icon">
+                    <img src="./assets/cpp.png" alt="C++" width="16" height="16">
+                </span>
+                <span class="file-name">radix_sort.cpp</span>
+            </li>
+            <li class="file-item" data-file="php">
+                <span class="file-icon">
+                    <img src="./assets/php.png" alt="PHP" width="16" height="16">
+                </span>
+                <span class="file-name">radix_sort.php</span>
+            </li>
+            <li class="file-item" data-file="typescript">
+                <span class="file-icon">
+                    <img src="./assets/typescript.png" alt="TypeScript" width="16" height="16">
+                </span>
+                <span class="file-name">radix_sort.ts</span>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <button class="back-button" onclick="window.location.href='index.html'">Voltar para a Visualização</button>
+
+        <!-- Rust Editor -->
+        <div class="editor-container active" id="rust-editor">
+            <div class="tabs">
+                <div class="tab active">
+                    <span class="file-icon">
+                        <img src="./assets/rust.png" alt="Rust" width="16" height="16">
+                    </span>
+                    <span>radix_sort.rs</span>
+                </div>
+            </div>
+            <div class="editor">
+                <div class="code-content">
+                    <div class="code-line"><span class="line-number">1</span><span class="code-text"><span class="comment">// Implementação do Radix Sort em Rust</span></span></div>
+                    <div class="code-line"><span class="line-number">2</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">3</span><span class="code-text"><span class="keyword">fn</span> <span class="function">radix_sort</span>(<span class="keyword">mut</span> arr: <span class="type">Vec</span>&lt;<span class="type">u32</span>&gt;) -> <span class="type">Vec</span>&lt;<span class="type">u32</span>&gt; {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">4</span><span class="code-text"><span class="keyword">let</span> <span class="keyword">mut</span> max = 0;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">5</span><span class="code-text"><span class="keyword">for</span> &num <span class="keyword">in</span> &arr {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">6</span><span class="code-text"><span class="keyword">if</span> num > max {</span></div>
+                    <div class="code-line indent-3"><span class="line-number">7</span><span class="code-text">max = num;</span></div>
+                    <div class="code-line indent-2"><span class="line-number">8</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">9</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">10</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">11</span><span class="code-text"><span class="keyword">let</span> <span class="keyword">mut</span> exp = 1;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">12</span><span class="code-text"><span class="keyword">while</span> max / exp > 0 {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">13</span><span class="code-text"><span class="keyword">let</span> <span class="keyword">mut</span> output = <span class="type">vec</span>![0; arr.len()];</span></div>
+                    <div class="code-line indent-2"><span class="line-number">14</span><span class="code-text"><span class="keyword">let</span> <span class="keyword">mut</span> count = [0; 10];</span></div>
+                    <div class="code-line indent-2"><span class="line-number">15</span><span class="code-text"></span></div>
+                    <div class="code-line indent-2"><span class="line-number">16</span><span class="code-text"><span class="keyword">for</span> &num <span class="keyword">in</span> &arr {</span></div>
+                    <div class="code-line indent-3"><span class="line-number">17</span><span class="code-text"><span class="keyword">let</span> digit = (num / exp % 10) <span class="keyword">as</span> <span class="type">usize</span>;</span></div>
+                    <div class="code-line indent-3"><span class="line-number">18</span><span class="code-text">count[digit] += 1;</span></div>
+                    <div class="code-line indent-2"><span class="line-number">19</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-2"><span class="line-number">20</span><span class="code-text"></span></div>
+                    <div class="code-line indent-2"><span class="line-number">21</span><span class="code-text"><span class="keyword">for</span> i <span class="keyword">in</span> 1..10 {</span></div>
+                    <div class="code-line indent-3"><span class="line-number">22</span><span class="code-text">count[i] += count[i - 1];</span></div>
+                    <div class="code-line indent-2"><span class="line-number">23</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-2"><span class="line-number">24</span><span class="code-text"></span></div>
+                    <div class="code-line indent-2"><span class="line-number">25</span><span class="code-text"><span class="keyword">for</span> i <span class="keyword">in</span> (0..arr.len()).rev() {</span></div>
+                    <div class="code-line indent-3"><span class="line-number">26</span><span class="code-text"><span class="keyword">let</span> digit = (arr[i] / exp % 10) <span class="keyword">as</span> <span class="type">usize</span>;</span></div>
+                    <div class="code-line indent-3"><span class="line-number">27</span><span class="code-text">output[count[digit] - 1] = arr[i];</span></div>
+                    <div class="code-line indent-3"><span class="line-number">28</span><span class="code-text">count[digit] -= 1;</span></div>
+                    <div class="code-line indent-2"><span class="line-number">29</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-2"><span class="line-number">30</span><span class="code-text"></span></div>
+                    <div class="code-line indent-2"><span class="line-number">31</span><span class="code-text">arr = output;</span></div>
+                    <div class="code-line indent-2"><span class="line-number">32</span><span class="code-text">exp *= 10;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">33</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">34</span><span class="code-text">arr</span></div>
+                    <div class="code-line"><span class="line-number">35</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">36</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">37</span><span class="code-text"><span class="keyword">fn</span> <span class="function">main</span>() {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">38</span><span class="code-text"><span class="keyword">let</span> arr = <span class="type">vec</span>![170, 45, 75, 90, 802, 24, 2, 66];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">39</span><span class="code-text"><span class="keyword">let</span> sorted = radix_sort(arr);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">40</span><span class="code-text"><span class="function">println!</span>(<span class="string">"Sorted array: {:?}"</span>, sorted);</span></div>
+                    <div class="code-line"><span class="line-number">41</span><span class="code-text">}</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- C++ Editor -->
+        <div class="editor-container" id="cpp-editor">
+            <div class="tabs">
+                <div class="tab active">
+                    <span class="file-icon">
+                        <img src="./assets/cpp.png" alt="C++" width="16" height="16">
+                    </span>
+                    <span>radix_sort.cpp</span>
+                </div>
+            </div>
+            <div class="editor">
+                <div class="code-content">
+                    <div class="code-line"><span class="line-number">1</span><span class="code-text"><span class="comment">// Implementação do Radix Sort em C++</span></span></div>
+                    <div class="code-line"><span class="line-number">2</span><span class="code-text"><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span></span></div>
+                    <div la class="code-line"><span class="line-number">3</span><span class="code-text"><span class="keyword">#include</span> <span class="string">&lt;vector&gt;</span></span></div>
+                    <div class="code-line"><span class="line-number">4</span><span class="code-text"><span class="keyword">#include</span> <span class="string">&lt;cmath&gt;</span></span></div>
+                    <div class="code-line"><span class="line-number">5</span><span class="code-text"><span class="keyword">using namespace</span> std;</span></div>
+                    <div class="code-line"><span class="line-number">6</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">7</span><span class="code-text"><span class="comment">// Função para encontrar o valor máximo no vetor</span></span></div>
+                    <div class="code-line"><span class="line-number">8</span><span class="code-text"><span class="type">int</span> <span class="function">get_max</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt; &arr) {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">9</span><span class="code-text"><span class="type">int</span> max = arr[0];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">10</span><span class="code-text"><span class="keyword">for</span> (<span class="type">size_t</span> i = 1; i < arr.size(); i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">11</span><span class="code-text"><span class="keyword">if</span> (arr[i] > max) max = arr[i];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">12</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">13</span><span class="code-text"><span class="keyword">return</span> max;</span></div>
+                    <div class="code-line"><span class="line-number">14</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">15</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">16</span><span class="code-text"><span class="comment">// Função para ordenar o vetor de acordo com o dígito na posição informada</span></span></div>
+                    <div class="code-line"><span class="line-number">17</span><span class="code-text"><span class="type">void</span> <span class="function">order_by</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt; &arr, <span class="type">int</span> position) {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">18</span><span class="code-text">size_t size = arr.size();</span></div>
+                    <div class="code-line indent-1"><span class="line-number">19</span><span class="code-text"><span class="type">vector</span>&lt;<span class="type">int</span>&gt; result(size);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">20</span><span class="code-text"><span class="type">int</span> count[10] = {0};</span></div>
+                    <div class="code-line indent-1"><span class="line-number">21</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">22</span><span class="code-text"><span class="comment">// Conta a ocorrência de cada dígito</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">23</span><span class="code-text"><span class="keyword">for</span> (<span class="type">size_t</span> i = 0; i < size; i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">24</span><span class="code-text">count[(arr[i] / position) % 10]++;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">25</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">26</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">27</span><span class="code-text"><span class="comment">// Soma acumulada para determinar as posições finais</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">28</span><span class="code-text"><span class="keyword">for</span> (<span class="type">int</span> i = 1; i < 10; i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">29</span><span class="code-text">count[i] += count[i - 1];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">30</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">31</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">32</span><span class="code-text"><span class="comment">// Monta o vetor ordenado para o dígito atual</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">33</span><span class="code-text"><span class="keyword">for</span> (<span class="type">int</span> i = (<span class="type">int</span>)size - 1; i >= 0; i--) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">34</span><span class="code-text"><span class="type">int</span> pos = (arr[i] / position) % 10;</span></div>
+                    <div class="code-line indent-2"><span class="line-number">35</span><span class="code-text">result[count[pos] - 1] = arr[i];</span></div>
+                    <div class="code-line indent-2"><span class="line-number">36</span><span class="code-text">count[pos]--;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">37</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">38</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">39</span><span class="code-text"><span class="comment">// Copia o resultado de volta para o vetor original</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">40</span><span class="code-text"><span class="keyword">for</span> (<span class="type">size_t</span> i = 0; i < size; i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">41</span><span class="code-text">arr[i] = result[i];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">42</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">43</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">44</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">45</span><span class="code-text"><span class="comment">// Função principal do Radix Sort</span></span></div>
+                    <div class="code-line"><span class="line-number">46</span><span class="code-text"><span class="type">void</span> <span class="function">radix_sort</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt; &arr) {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">47</span><span class="code-text"><span class="keyword">if</span> (arr.empty()) <span class="keyword">return</span>;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">48</span><span class="code-text"><span class="type">int</span> max_value = get_max(arr);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">49</span><span class="code-text"><span class="keyword">for</span> (<span class="type">int</span> i = 1; max_value / i > 0; i *= 10) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">50</span><span class="code-text">order_by(arr, i);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">51</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">52</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">53</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">54</span><span class="code-text"><span class="comment">// Função para imprimir o vetor</span></span></div>
+                    <div class="code-line"><span class="line-number">55</span><span class="code-text"><span class="type">void</span> <span class="function">print</span>(<span class="type">vector</span>&lt;<span class="type">int</span>&gt; &arr) {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">56</span><span class="code-text"><span class="keyword">for</span> (<span class="type">size_t</span> i = 0; i < arr.size(); i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">57</span><span class="code-text">cout << arr[i] << ' ';</span></div>
+                    <div class="code-line indent-1"><span class="line-number">58</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">59</span><span class="code-text">cout << endl;</span></div>
+                    <div class="code-line"><span class="line-number">60</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">61</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">62</span><span class="code-text"><span class="comment">// Função main para testar o Radix Sort</span></span></div>
+                    <div class="code-line"><span class="line-number">63</span><span class="code-text"><span class="type">int</span> <span class="function">main</span>() {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">64</span><span class="code-text"><span class="type">vector</span>&lt;<span class="type">int</span>&gt; arr = {170, 45, 75, 90, 802, 24, 2, 66};</span></div>
+                    <div class="code-line indent-1"><span class="line-number">65</span><span class="code-text">radix_sort(arr);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">66</span><span class="code-text">cout << "Array ordenado: ";</span></div>
+                    <div class="code-line indent-1"><span class="line-number">67</span><span class="code-text">print(arr);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">68</span><span class="code-text"><span class="keyword">return</span> 0;</span></div>
+                    <div class="code-line"><span class="line-number">69</span><span class="code-text">}</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHP Editor -->
+        <div class="editor-container" id="php-editor">
+            <div class="tabs">
+                <div class="tab active">
+                    <span class="file-icon">
+                        <img src="./assets/php.png" alt="PHP" width="16" height="16">
+                    </span>
+                    <span>radix_sort.php</span>
+                </div>
+            </div>
+            <div class="editor">
+                <div class="code-content">
+                    <div class="code-line"><span class="line-number">1</span><span class="code-text"><span class="type">&lt;?php</span></span></div>
+                    <div class="code-line"><span class="line-number">2</span><span class="code-text"><span class="comment">// Implementação do Radix Sort em PHP</span></span></div>
+                    <div class="code-line"><span class="line-number">3</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">4</span><span class="code-text"><span class="comment">// Função para encontrar o valor máximo no array</span></span></div>
+                    <div class="code-line"><span class="line-number">5</span><span class="code-text"><span class="keyword">function</span> <span class="function">getMax</span>(<span class="keyword">array</span> $arr) {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">6</span><span class="code-text">$max = $arr[0];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">7</span><span class="code-text"><span class="keyword">foreach</span> ($arr as $value) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">8</span><span class="code-text"><span class="keyword">if</span> ($value > $max) {</span></div>
+                    <div class="code-line indent-3"><span class="line-number">9</span><span class="code-text">$max = $value;</span></div>
+                    <div class="code-line indent-2"><span class="line-number">10</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">11</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">12</span><span class="code-text"><span class="keyword">return</span> $max;</span></div>
+                    <div class="code-line"><span class="line-number">13</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">14</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">15</span><span class="code-text"><span class="comment">// Counting sort para um dígito específico</span></span></div>
+                    <div class="code-line"><span class="line-number">16</span><span class="code-text"><span class="keyword">function</span> <span class="function">countSort</span>(<span class="keyword">array</span> &$arr, $exp) {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">17</span><span class="code-text">$n = count($arr);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">18</span><span class="code-text">$output = array_fill(0, $n, 0);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">19</span><span class="code-text">$count = array_fill(0, 10, 0);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">20</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">21</span><span class="code-text"><span class="comment">// Conta ocorrências</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">22</span><span class="code-text"><span class="keyword">for</span> ($i = 0; $i < $n; $i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">23</span><span class="code-text">$digit = intval(($arr[$i] / $exp) % 10);</span></div>
+                    <div class="code-line indent-2"><span class="line-number">24</span><span class="code-text">$count[$digit]++;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">25</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">26</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">27</span><span class="code-text"><span class="comment">// Soma acumulada</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">28</span><span class="code-text"><span class="keyword">for</span> ($i = 1; $i < 10; $i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">29</span><span class="code-text">$count[$i] += $count[$i - 1];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">30</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">31</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">32</span><span class="code-text"><span class="comment">// Monta o array de saída</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">33</span><span class="code-text"><span class="keyword">for</span> ($i = $n - 1; $i >= 0; $i--) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">34</span><span class="code-text">$digit = intval(($arr[$i] / $exp) % 10);</span></div>
+                    <div class="code-line indent-2"><span class="line-number">35</span><span class="code-text">$output[$count[$digit] - 1] = $arr[$i];</span></div>
+                    <div class="code-line indent-2"><span class="line-number">36</span><span class="code-text">$count[$digit]--;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">37</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">38</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">39</span><span class="code-text"><span class="comment">// Copia para o array original</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">40</span><span class="code-text"><span class="keyword">for</span> ($i = 0; $i < $n; $i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">41</span><span class="code-text">$arr[$i] = $output[$i];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">42</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">43</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">44</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">45</span><span class="code-text"><span class="comment">// Função principal do Radix Sort</span></span></div>
+                    <div class="code-line"><span class="line-number">46</span><span class="code-text"><span class="keyword">function</span> <span class="function">radixSort</span>(<span class="keyword">array</span> &$arr) {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">47</span><span class="code-text">$max = getMax($arr);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">48</span><span class="code-text"><span class="keyword">for</span> ($exp = 1; intval($max / $exp) > 0; $exp *= 10) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">49</span><span class="code-text">countSort($arr, $exp);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">50</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">51</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">52</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">53</span><span class="code-text"><span class="comment">// Exemplo de uso</span></span></div>
+                    <div class="code-line"><span class="line-number">54</span><span class="code-text">$arr = [170, 45, 75, 90, 802, 24, 2, 66];</span></div>
+                    <div class="code-line"><span class="line-number">55</span><span class="code-text">radixSort($arr);</span></div>
+                    <div class="code-line"><span class="line-number">56</span><span class="code-text">echo "Array ordenado: " . implode(", ", $arr);</span></div>
+                    <div class="code-line"><span class="line-number">57</span><span class="code-text"><span class="type">?&gt;</span></span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TypeScript Editor -->
+        <div class="editor-container" id="typescript-editor">
+            <div class="tabs">
+                <div class="tab active">
+                    <span class="file-icon">
+                        <img src="./assets/typescript.png" alt="TypeScript" width="16" height="16">
+                    </span>
+                    <span>radix_sort.ts</span>
+                </div>
+            </div>
+            <div class="editor">
+                <div class="code-content">
+                    <div class="code-line"><span class="line-number">1</span><span class="code-text"><span class="comment">// Implementação do Radix Sort em TypeScript</span></span></div>
+                    <div class="code-line"><span class="line-number">2</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">3</span><span class="code-text"><span class="comment">// Função para encontrar o valor máximo no array</span></span></div>
+                    <div class="code-line"><span class="line-number">4</span><span class="code-text"><span class="keyword">function</span> <span class="function">getMax</span>(arr: <span class="type">number</span>[]): <span class="type">number</span> {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">5</span><span class="code-text"><span class="keyword">let</span> max = arr[0];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">6</span><span class="code-text"><span class="keyword">for</span> (<span class="keyword">let</span> i = 1; i < arr.length; i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">7</span><span class="code-text"><span class="keyword">if</span> (arr[i] > max) { max = arr[i]; }</span></div>
+                    <div class="code-line indent-1"><span class="line-number">8</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">9</span><span class="code-text"><span class="keyword">return</span> max;</span></div>
+                    <div class="code-line"><span class="line-number">10</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">11</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">12</span><span class="code-text"><span class="comment">// Counting sort para um dígito específico</span></span></div>
+                    <div class="code-line"><span class="line-number">13</span><span class="code-text"><span class="keyword">function</span> <span class="function">countSort</span>(arr: <span class="type">number</span>[], exp: <span class="type">number</span>): <span class="type">void</span> {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">14</span><span class="code-text"><span class="keyword">const</span> n = arr.length;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">15</span><span class="code-text"><span class="keyword">const</span> output = <span class="keyword">new</span> <span class="type">Array</span>(n).fill(0);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">16</span><span class="code-text"><span class="keyword">const</span> count = <span class="keyword">new</span> <span class="type">Array</span>(10).fill(0);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">17</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">18</span><span class="code-text"><span class="comment">// Conta ocorrências</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">19</span><span class="code-text"><span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i < n; i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">20</span><span class="code-text"><span class="keyword">const</span> digit = Math.floor(arr[i] / exp) % 10;</span></div>
+                    <div class="code-line indent-2"><span class="line-number">21</span><span class="code-text">count[digit]++;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">22</span><span class="code-text">}</span></div>
+                    <div class "code-line indent-1"><span class="line-number">23</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">24</span><span class="code-text"><span class="comment">// Soma acumulada</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">25</span><span class="code-text"><span class="keyword">for</span> (<span class="keyword">let</span> i = 1; i < 10; i++) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">26</span><span class="code-text">count[i] += count[i - 1];</span></div>
+                    <div class="code-line indent-1"><span class="line-number">27</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">28</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">29</span><span class="code-text"><span class="comment">// Monta o array de saída</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">30</span><span class="code-text"><span class="keyword">for</span> (<span class="keyword">let</span> i = n - 1; i >= 0; i--) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">31</span><span class="code-text"><span class="keyword">const</span> digit = Math.floor(arr[i] / exp) % 10;</span></div>
+                    <div class="code-line indent-2"><span class="line-number">32</span><span class="code-text">output[count[digit] - 1] = arr[i];</span></div>
+                    <div class="code-line indent-2"><span class="line-number">33</span><span class="code-text">count[digit]--;</span></div>
+                    <div class="code-line indent-1"><span class="line-number">34</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">35</span><span class="code-text"></span></div>
+                    <div class="code-line indent-1"><span class="line-number">36</span><span class="code-text"><span class="comment">// Copia para o array original</span></span></div>
+                    <div class="code-line indent-1"><span class="line-number">37</span><span class="code-text"><span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i < n; i++) { arr[i] = output[i]; }</span></div>
+                    <div class="code-line"><span class="line-number">38</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">39</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">40</span><span class="code-text"><span class="comment">// Função principal do Radix Sort</span></span></div>
+                    <div class="code-line"><span class="line-number">41</span><span class="code-text"><span class="keyword">function</span> <span class="function">radixSort</span>(arr: <span class="type">number</span>[]): <span class="type">number</span>[] {</span></div>
+                    <div class="code-line indent-1"><span class="line-number">42</span><span class="code-text"><span class="keyword">const</span> max = getMax(arr);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">43</span><span class="code-text"><span class="keyword">for</span> (<span class="keyword">let</span> exp = 1; Math.floor(max / exp) > 0; exp *= 10) {</span></div>
+                    <div class="code-line indent-2"><span class="line-number">44</span><span class="code-text">countSort(arr, exp);</span></div>
+                    <div class="code-line indent-1"><span class="line-number">45</span><span class="code-text">}</span></div>
+                    <div class="code-line indent-1"><span class="line-number">46</span><span class="code-text"><span class="keyword">return</span> arr;</span></div>
+                    <div class="code-line"><span class="line-number">47</span><span class="code-text">}</span></div>
+                    <div class="code-line"><span class="line-number">48</span><span class="code-text"></span></div>
+                    <div class="code-line"><span class="line-number">49</span><span class="code-text"><span class="comment">// Exemplo de uso</span></span></div>
+                    <div class="code-line"><span class="line-number">50</span><span class="code-text"><span class="keyword">const</span> arr: <span class="type">number</span>[] = [170, 45, 75, 90, 802, 24, 2, 66];</span></div>
+                    <div class="code-line"><span class="line-number">51</span><span class="code-text"><span class="keyword">const</span> sortedArr = radixSort([...arr]);</span></div>
+                    <div class="code-line"><span class="line-number">52</span><span class="code-text">console.log('Array ordenado:', sortedArr);</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="code.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+:root {
+    --vscode-bg: #1e1e1e;
+    --vscode-sidebar-bg: #252526;
+    --vscode-sidebar-active: #37373d;
+    --vscode-text: #cccccc;
+    --vscode-accent: #007acc;
+    --vscode-line-number: #858585;
+    --vscode-comment: #6a9955;
+    --vscode-keyword: #569cd6;
+    --vscode-string: #ce9178;
+    --vscode-function: #dcdcaa;
+    --vscode-number: #b5cea8;
+    --vscode-type: #4ec9b0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+body {
+    background-color: var(--vscode-bg);
+    color: var(--vscode-text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: var(--vscode-sidebar-bg);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #333;
+}
+
+.explorer-header {
+    padding: 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #888;
+}
+
+.file-list {
+    list-style-type: none;
+}
+
+.file-item {
+    padding: 8px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.file-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.file-item.active {
+    background-color: var(--vscode-sidebar-active);
+}
+
+.file-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
+.file-name {
+    flex-grow: 1;
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs {
+    display: flex;
+    background-color: var(--vscode-bg);
+    border-bottom: 1px solid #333;
+}
+
+.tab {
+    padding: 8px 15px;
+    background-color: var(--vscode-sidebar-bg);
+    border-right: 1px solid #333;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab.active {
+    background-color: var(--vscode-bg);
+    border-bottom: 1px solid var(--vscode-accent);
+    margin-bottom: -1px;
+}
+
+.editor {
+    flex-grow: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    height: calc(100vh - 90px);
+}
+
+.line-numbers {
+    width: 40px;
+    background-color: var(--vscode-bg);
+    color: var(--vscode-line-number);
+    text-align: right;
+    padding: 10px 5px;
+    user-select: none;
+    font-size: 14px;
+    overflow-y: hidden;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+.code-content {
+    flex-grow: 1;
+    padding: 0 0 50px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-y: auto;
+    max-height: 100%;
+    background: var(--vscode-bg);
+    scrollbar-width: thin;
+    scrollbar-color: #555 var(--vscode-bg);
+}
+
+.code-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.code-content::-webkit-scrollbar-track {
+    background: var(--vscode-bg);
+}
+
+.code-content::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+.code-line {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    min-height: 1.5em;
+    /* border-bottom: 1px solid #222; opcional para debug visual */
+}
+
+.line-number {
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+    background: var(--vscode-bg);
+    color: var(--vscode-line-number);
+    text-align: right;
+    padding-right: 10px;
+    user-select: none;
+    font-size: 14px;
+    flex-shrink: 0;
+    /* border-right: 1px solid #333; opcional para debug visual */
+}
+
+.code-text {
+    flex-grow: 1;
+    white-space: pre;
+    font-size: 14px;
+    color: var(--vscode-text);
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    background: transparent;
+    padding-left: 8px;
+}
+
+.editor-container {
+    display: none;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.editor-container.active {
+    display: flex;
+}
+
+.back-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--vscode-accent);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* Syntax highlighting classes */
+.keyword { color: var(--vscode-keyword); }
+.string { color: var(--vscode-string); }
+.comment { color: var(--vscode-comment); }
+.function { color: var(--vscode-function); }
+.number { color: var(--vscode-number); }
+.type { color: var(--vscode-type); }
